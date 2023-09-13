@@ -1,0 +1,363 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcdqPKg96PP2gEuCohQqAgx03dDQq57Hk"></script>
+<script src="https://kit.fontawesome.com/5f66ae4ff0.js" crossorigin="anonymous"></script>
+</head>
+
+
+
+
+<body>
+<div class="container  d-flex justify-content-center" >
+  <div id="all" class="row col-sm-6 col-12 mt-4">
+    <h1 class="text-white text-center mt-5 font-serif" style="font-family: 'Georgia', serif;">Events Search</h1>
+    <div class="d-flex justify-content-center">
+      <hr class="col-12 my-3 border-1" style=" border-top: 2px solid white; opacity: 1" >
+    </div>
+    <form ngNativeValidate (ngSubmit)=" searchresult($event)">
+      <label class="control-label col-sm-3 col-form-label" style="color:rgb(0,170,255);">Keyword<span class="asterisk" style="color:red;">*</span></label>
+      <div class="form-group row col-12 mx-auto mb-3">
+        <input matInput type="text" name="keywordinput" class="form-control" [formControl]="keywordsearch" [(ngModel)]="keyword" [matAutocomplete]="auto" required>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of autooptions" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+        <div class="form-group row my-md-3">
+          <div class="form-group col-12 col-md-6">
+            <label style="color:rgb(0,170,255);">Distance</label>
+            <input type="number" name="numberinput" class="form-control" id="input1" placeholder="10" [(ngModel)]="distance">
+          </div>
+          <div class="form-group col-9 col-md-4 my-3 my-md-0">
+            <label style="color:rgb(0,170,255);">Category<span class="asterisk" style="color:red;">*</span></label>
+            <select class="form-control" name="cateinput" [(ngModel)]="categorys">
+              <option value="Default" selected>Default</option>
+              <option value="Music">Music</option>
+              <option value="Sports">Sports</option>
+              <option value="ArtsTheatre">Art & Theatre</option>
+              <option value="Films">Film</option>
+              <option value="Miscellaneous">Miscellaneous</option>
+            </select>
+          </div>
+        </div>
+      <label class="control-label col-sm-3 col-form-label" style="color:rgb(0,170,255);">Location<span class="asterisk" style="color:red;">*</span></label>
+      <div class="form-group row col-12 mx-auto mb-3">
+        <input type="text" name="locainput" class="form-control" [(ngModel)]="locationplace" [disabled]="isChecked" required>
+      </div>
+      <div class="form-group col-12 mb-3 " >
+          <input type="checkbox" name="checkinput" class="mx-1" [(ngModel)]="isChecked" (click)="clearlocainput()">
+          <label style="color:rgb(0,170,255);" class="mx-1">Auto-detect your location</label>
+      </div>
+      <div class="row d-flex justify-content-center mb-5">
+        <div class="col-auto">
+          <button type="submit" class="btn btn-danger " >SUBMIT</button>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary" (click)="clearall()">CLEAR</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<div class="container d-flex justify-content-center" *ngIf="showresult" style="margin-top:4rem; ">
+  <div class=" col-12 col-md-7 " *ngIf="noresult&&detailshow==false" style="background-color: white; color: red; border: 1px solid #ccc; border-radius: 5px; text-align: center;">
+    No results available
+  </div>
+
+  <div class=" col-12 col-md-10" *ngIf="noresult==false">
+    <div class="table-responsive">
+      <table class="table table-striped col-12 col-md-10">
+          <thead>
+            <tr>
+              <th>Date/Time</th>
+              <th>Icon</th>
+              <th>Event</th>
+              <th>Genre</th>
+              <th>Venue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of eventscontent; let i =index"(click)="showdetails(i)">
+              <td>{{item.dates.start.localDate}}<br>{{item.dates.start.localTime}}</td>
+              <td><img [src]="item.images[0].url"></td>
+              <td>{{item.name}}</td>
+              <td>{{item.classifications[0].segment.name}}
+              <td>{{item._embedded.venues[0].name }}</td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+  <div class="container d-flex justify-content-center mb-3">
+    <div id="all2" class="col-12 col-md-10" *ngIf="detailshow" >
+      <div class="d-flex align-items-center">
+     <span class="material-icons text-white">
+      arrow_back_ios
+    </span>
+       <span><a href="javascript:void(0)" class="text-white" (click)="backtotable()">back</a></span>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-center">
+        <h1 class="text-center mb-3 text-white">
+          {{eventname}}
+        </h1>
+        <a href="javascript:void(0)" (click)="deleteEventByid()" false *ngIf="favorite">
+        <div class="circle mb-3 ml-1">
+        <mat-icon style="color:red" >favorite</mat-icon>
+        </div>
+        </a>
+        <a href="javascript:void(0)" (click)="saveEvent()" false *ngIf="!favorite">
+          <div class="circle mb-3 ml-1">
+            <mat-icon>favorite_border</mat-icon>
+          </div>
+        </a>
+      </div>
+
+      <mat-tab-group class="custom-tab-group" mat-align-tabs="center" mat-stretch-tabs="false" backgroundColor="primary">
+        <mat-tab label="Events      ">
+          <div class="row  align-items-center mx-0 no-gutters">
+            <div class="col-md-6 col-12">
+              <div class="text-center 5 mt-5 mb-3" *ngIf="eventdate!=''">
+                <div style="color:#AFF1E3; font-size:20px;">Date</div>
+                <div style="color:white">{{eventdate}}</div>
+              </div>
+              <div class="text-center mb-3" *ngIf="artist!=''">
+                <div style="color:#AFF1E3; font-size:20px;">Artist/Teams</div>
+                <div style="color:white">{{artist}}</div>
+              </div>
+
+              <div class="text-center mb-3" *ngIf="this.venue!=''">
+                <div style="color:#AFF1E3; font-size:20px;">Venue</div>
+                <div style="color:white">{{venue}}</div>
+              </div>
+
+              <div class="text-center mb-3" *ngIf="genres!=''">
+                <div style="color:#AFF1E3; font-size:20px;">Genres</div>
+                <div style="color:white">{{genres}}</div>
+              </div>
+
+              <div class="text-center mb-3" *ngIf="pricerange!=''">
+                <div style="color:#AFF1E3; font-size:20px;">Price Ranges</div>
+                <div style="color:white">{{pricerange}}</div>
+              </div>
+
+              <div class="text-center mb-3 d-flex flex-column align-items-center" *ngIf="ticketstatus!=''">
+                <div style="color:#AFF1E3; font-size:20px;  margin: auto;">Ticket Status</div>
+                <div class="onsale" *ngIf="ticketstatus=='onsale'">{{ticketstatus}}</div>
+                <div class="offsale" *ngIf="ticketstatus=='offsale'">{{ticketstatus}}</div>
+                <div class="cancelled" *ngIf="ticketstatus=='cancelled'">{{ticketstatus}}</div>
+                <div class="postponed" *ngIf="ticketstatus=='postponed'">{{ticketstatus}}</div>
+                <div class="rescheduled" *ngIf="ticketstatus=='rescheduled'">{{ticketstatus}}</div>
+              </div>
+
+              <div class="text-center">
+                <div style="color:#AFF1E3; font-size:20px;">Buy Ticket At</div>
+                <a href="{{ticketurl}}"target="_blank">Ticketmaster</a>
+              </div>
+
+
+            </div>
+
+            <div class="col-md-6 col-12 d-flex align-items-center justify-content-center my-3 my-md-0">
+              <img src="{{seatmap}}" style="width: 80%; height: 80%;">
+            </div>
+          </div>
+
+          <div class="row text-center mx-0 no-gutters mt-5 mb-3">
+            <div>
+              <span class="text-white">Share on:</span>
+              <a href="{{twitterApi}}" target="_blank">
+              <i class="fa-brands fa-twitter fa-2xl" style="color: #5188e6; margin-right: 8px;"></i>
+              </a>
+              <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{this.ticketurl}}&amp;src=sdkpreparse">
+              <i class="fa-brands fa-square-facebook fa-2xl" style="color: #0659ea;"></i>
+              </a>
+            </div>
+          </div>
+
+
+
+        </mat-tab>
+        <mat-tab label="Artist/Teams">
+          <div class="d-flex justify-content-center mt-5 mb-5" *ngIf="!ismusic">
+            <div class="rounded-5 text-center  col-md-6 col-10" style="background-color:white; border: 10px solid transparent; color: red;">
+              No music related artist details to show
+            </div>
+          </div>
+          <ngb-carousel  [interval]="0" [showNavigationIndicators]="false"[showNavigationArrows]="artistdetailList.length > 1" *ngIf="ismusic">
+            <ng-template ngbSlide *ngFor="let item of artistdetailList;let i=index">
+              <div class="row mx-0 no-gutters">
+                <div class="col-md-3 col-12 offset-md-1 offset-0 d-flex flex-column align-items-center mt-4">
+                  <img src="{{item.image}}" class="rounded-circle">
+                  <label style="color:#AFF1E3; font-size:20px" class="text-center">{{item.name}}</label>
+                </div>
+                  <div class="col-12 col-md-2  d-flex flex-column align-items-center justify-content-start mt-md-5 mt-3">
+                      <label style="color:#AFF1E3; font-size:16px">Popularity</label>
+                      <div class="mt-3">
+                      <mat-progress-spinner [color]="'warn'" [mode]="'determinate'" [value]="item.popularity"></mat-progress-spinner>
+                      <div style="position:relative; top: -60px; left:40px; color:white">{{ item.popularity }}</div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-2  d-flex flex-column align-items-center justify-content-start mt-md-5 mt-3">
+                      <label style="color:#AFF1E3; font-size:16px">followers</label>
+                      <label class="mt-md-5 mt-3 text-white">{{item.followers|number}}</label>
+                    </div>
+                    <div class="col-12 col-md-2 d-flex flex-column align-items-center justify-content-start mt-md-5 mt-3">
+                      <label style="color:#AFF1E3; font-size:16px">Spotify Link</label>
+                      <a href="{{item.url}}" target="_blank" class="mt-md-5 mt-3">
+                        <i class="fa-brands fa-spotify fa-2xl " style="color: #1fa861;"></i>
+                      </a>
+                    </div>
+                  </div>
+              <div class="row mx-0 no-gutters mt-md-3 mt-2  mb-3">
+                <div class="col-12 album offset-md-1 offset-0">
+                <label style="color:#AFF1E3; font-size:16px">Album featuring {{item.name}}</label>
+                </div>
+              </div>
+              <div class="row mx-0 no-gutters mt-md-3 mt-2 mb-3">
+                <div class="col-12 offset-md-1 offset-0 col-md-3">
+                  <img src="{{item.album1}}" class="img-fluid m-4">
+                </div>
+                <div class="col-12 col-md-3">
+                  <img src="{{item.album2}}" class="img-fluid m-4">
+                </div>
+                <div class="col-12 col-md-3">
+                  <img src="{{item.album3}}" class="img-fluid m-4">
+                </div>
+              </div>
+            </ng-template>
+          </ngb-carousel>
+        </mat-tab>
+        <mat-tab label="Venue      ">
+          <div class="row  align-items-start mx-0 no-gutters">
+            <div class="col-md-6 col-12">
+              <div class="text-center mt-5 mb-4"  *ngIf="venue!=''">
+                <div style="color:#AFF1E3; font-size:20px;">Name</div>
+                <div class="text-white">{{venue}}</div>
+              </div>
+
+              <div class="text-center mb-4"  *ngIf="address!=''">
+                <div style="color:#AFF1E3; font-size:20px;">Address</div>
+                <div class="text-white">{{address}}</div>
+              </div>
+
+              <div class="text-center"  *ngIf="phonenumber!=''">
+                <div style="color:#AFF1E3; font-size:20px;">Phone Number</div>
+                <div class="text-white">{{phonenumber}}</div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-12">
+
+
+              <div class="text-center mt-5 mb-3"  *ngIf="openhours!=''">
+                <div [ngClass]="{ 'text-container': true, 'show-less': !showFullText, 'show-more': showFullText }">
+                  <div style="color:#AFF1E3; font-size:20px;">Open Hours</div>
+                  <div class="text-white mx-auto col-md-10 col-12">{{openhours}}</div>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                <a href="javascript:void(0)" class="text-center" (click)="toggleFullText()" style="color:white;">{{ showFullText ? 'Show Less' : 'Show More' }}
+                </a>
+                <span class="material-symbols-outlined align-middle" style="color:white" *ngIf="!showFullText">
+                    keyboard_arrow_down
+                </span>
+                  <span class="material-symbols-outlined align-middle" style="color:white" *ngIf="showFullText">
+                    keyboard_arrow_up
+                </span>
+                </div>
+              </div>
+
+              <div class="text-center mb-3" *ngIf="generalrule!=''">
+                <div [ngClass]="{ 'text-container': true, 'show-less': !showFullText1, 'show-more': showFullText1 }">
+                <div style="color:#AFF1E3; font-size:20px;">General Rule</div>
+                <div class="text-white mx-auto col-md-10 col-12">{{generalrule}}</div>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <a href="javascript:void(0)" class="text-center" (click)="toggleFullText1()" style="color:white;">{{ showFullText1 ? 'Show Less' : 'Show More' }}
+                  </a>
+                  <span class="material-symbols-outlined align-middle" style="color:white" *ngIf="!showFullText1">
+                    keyboard_arrow_down
+                </span>
+                  <span class="material-symbols-outlined align-middle" style="color:white" *ngIf="showFullText1">
+                    keyboard_arrow_up
+                </span>
+                </div>
+              </div>
+
+              <div class="text-center" *ngIf="childrule!=''">
+                <div [ngClass]="{ 'text-container': true, 'show-less': !showFullText2, 'show-more': showFullText2}">
+                <div style="color:#AFF1E3; font-size:20px;">Child Rule</div>
+                <div class="text-white mx-auto col-md-10 col-12">{{childrule}}</div>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <a href="javascript:void(0)" class="text-center" (click)="toggleFullText2()" style="color:white;">{{ showFullText2 ? 'Show Less' : 'Show More' }}
+                  </a>
+                  <span class="material-symbols-outlined align-middle" style="color:white" *ngIf="!showFullText2">
+                    keyboard_arrow_down
+                </span>
+                  <span class="material-symbols-outlined align-middle" style="color:white" *ngIf="showFullText2">
+                    keyboard_arrow_up
+                </span>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center mt-5 mb-5 ">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" >Show venue on Google map</button>
+          </div>
+
+
+          <!-- Modal -->
+
+
+
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-bs-backdrop="false">
+  <div class="modal-dialog" data-backdrop="static">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Event Venue</h1>
+      </div>
+      <div class="modal-body d-flex justify-content-center">
+        <div class="googlemap" style="overflow: hidden;">
+        <google-map
+          [center]="{ lat: venuelatitude, lng: venuelongtitude }"
+          [zoom]="14"
+          [width]="450" [height]="450">
+          <map-marker
+            [position]="{ lat: venuelatitude, lng: venuelongtitude}"
+            [title]="'My Location'">
+          </map-marker>
+        </google-map>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-start">
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+
+

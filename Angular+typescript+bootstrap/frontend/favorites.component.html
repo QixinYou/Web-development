@@ -1,0 +1,41 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<!-- Button trigger modal -->
+<div class="d-flex justify-content-center" *ngIf="empty">
+  <div class="rounded-5 text-center mt-5 col-md-6 col-10" style="background-color:white; border: 10px solid transparent; color: red;">
+    No favorite events to show
+  </div>
+</div>
+
+<div class="container d-flex justify-content-center">
+  <div class="col-12 col-md-8" *ngIf="!empty">
+    <div class="text-center mb-3" style="color:#AFF1E3;">List of your favorites events</div>
+    <table class="table table-hover rounded-3">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Date</th>
+        <th scope="col">Event</th>
+        <th scope="col">Category</th>
+        <th scope="col">Venue</th>
+        <th scope="col">Favorite</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of events; let i =index">
+        <td>{{i+1}}</td>
+        <td>{{item.save_date}}</td>
+        <td>{{item.save_eventname}}</td>
+        <td>{{item.save_category}}
+        <td>{{item.save_eventvenue}}</td>
+        <td><a href="javascript:void(0)" (click)="delete(i)"> <mat-icon>delete</mat-icon></a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+

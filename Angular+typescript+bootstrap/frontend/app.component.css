@@ -1,0 +1,34 @@
+.navbar {
+  background-color: transparent !important;
+}
+
+.navbar-nav {
+  margin-left: auto;
+}
+
+.nav-link {
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white !important;
+  font-size: 15px;
+}
+@media screen and (max-width: 576px) {
+  .navbar-nav li a {
+    font-size: 15px;
+  }
+}
+.nav-link.active{
+  border-radius: 8px;
+  border: 1px solid white;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white !important;
+}
+.nav-link:focus{
+  border-radius: 8px;
+  border: 1px solid white;
+}

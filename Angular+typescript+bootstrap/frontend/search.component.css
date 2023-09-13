@@ -1,0 +1,168 @@
+#all{
+  background-color: rgba(255,255,255,0.3);
+  backdrop-filter:blur(3px);
+  border-style: solid;
+  border-radius:12px;
+}
+
+#all2{
+  background-color: rgba(255,255,255,0.3);
+  backdrop-filter:blur(3px);
+  border-style: solid;
+  border-radius:12px;
+}
+
+table th, table td {
+  text-align: center;
+  color: #ffffff;
+}
+
+table img {
+  width: 80px;
+  height: 80px;
+}
+
+@media (min-width: 992px) {
+  table td, table th {
+    white-space: nowrap;
+    padding:20px;
+  }
+  .google-map {
+    height: 450px;
+    width: 450px;
+  }
+  .album{
+    text-align:left;
+  }
+}
+
+@media (max-width: 991px) {
+  table td, table th {
+    white-space: normal;
+  }
+  h1{
+    font-size: 18px;
+  }
+  .google-map {
+    height: 300px;
+    width: 300px;
+  }
+  .album{
+    text-align:center;
+  }
+
+}
+
+
+.table-striped > tbody > tr:nth-child(odd) {
+  background-color:#292A2E;
+}
+
+.table-striped > tbody > tr:nth-child(even) {
+  background-color: #202125;
+}
+.table-striped > tbody > tr {
+  border: 0px solid transparent !important;
+}
+.table-striped > thead > tr {
+  background-color:#202125 ;
+  color: white;
+  border: 0px solid transparent !important;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > td {
+  font-size: 15px;
+}
+tr:hover {
+  cursor: pointer;
+}
+
+
+.circle {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+}
+.circle mat-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: red;
+}
+
+.text-container {
+  overflow: hidden;
+  line-height: 1.5em;
+}
+
+.show-less {
+  height: 4.5em;
+}
+
+.show-more {
+  height: auto;
+}
+
+ngb-carousel {
+  overflow-y: hidden;
+}
+
+.mat-mdc-tab-group.mat-background-primary, .mat-mdc-tab-nav-bar.mat-background-primary {
+  --mat-mdc-tab-header-with-background-background-color: #3F8E7B!important;
+}
+.onsale{
+  font-family: Arial;
+  background-color:green;
+  width:fit-content;
+  padding: 2px 5px 2px 5px;
+  border-style:solid;
+  border-radius:6px;
+  border-color:green;
+  color:white;
+}
+.offsale{
+  font-family: Arial;
+  background-color:red;
+  width:fit-content;
+  padding: 2px 5px 2px 5px;
+  border-style:solid;
+  border-radius:6px;
+  border-color:red;
+  color:white;
+}
+.cancelled{
+  font-family: Arial;
+  background-color:black;
+  width:fit-content;
+  padding: 2px 5px 2px 5px;
+  border-style:solid;
+  border-radius:6px;
+  border-color:black;
+  color:white;
+}
+.postponed{
+  font-family: Arial;
+  background-color:orange;
+  width:fit-content;
+  padding: 2px 5px 2px 5px;
+  border-style:solid;
+  border-radius:6px;
+  border-color:orange;
+  color:white;
+}
+.rescheduled{
+  font-family: Arial;
+  background-color:orange;
+  width:fit-content;
+  padding: 2px 5px 2px 5px;
+  border-style:solid;
+  border-radius:6px;
+  border-color:orange;
+  color:white;
+}
+
